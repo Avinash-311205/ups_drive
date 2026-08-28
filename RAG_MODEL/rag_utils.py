@@ -10,6 +10,13 @@ DATA_DIR = os.path.dirname(__file__)
 INDEX_PATH = os.path.join(DATA_DIR, 'rag_index.pkl')
 
 def extract_text_from_pdf(path: str) -> str:
+    with open(path, 'rb') as f:
+        file_bytes = f.read()
+
+    # Accept the repository's text policy file even though it has a .pdf name.
+    if not file_bytes.startswith(b'%PDF'):
+        return file_bytes.decode('utf-8', errors='replace')
+
     reader = PdfReader(path)
     parts = []
     for p in reader.pages:

@@ -9,7 +9,7 @@ router.post('/chat', verifyToken, async (req, res) => {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'message is required' });
 
-    const reply = await askAssistant(req.user.id, message);
+    const reply = await askAssistant(req.user.id, message, req.user.role);
     res.json({ reply });
   } catch (err) {
     console.error(err);
